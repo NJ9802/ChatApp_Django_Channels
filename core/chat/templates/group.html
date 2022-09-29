@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container text-center">
+    <h1>New Group</h1>
+</div>
+<br>
+<div class="container">
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container">
+        <div class="container text-center">
+            {{form}}
+        </div>
+        <br>
+        <ul class="list-group">
+            {% for user in users %}
+            {% if not user == request.user %}
+        
+            <li class="list-group-item">
+            
+                <input class="form-check-input me-1" type="checkbox" name="users" value="{{user.id}}" id="user_{{user.id}}">
+            
+                <label class="form-check-label stretched-link" for="user_{{user.id}}">
+                    {{user|capfirst}}
+                </label>
+            
+            </li>
+            {%endif%}
+            {% endfor %}    
+        </ul>
+    </div>
+    <br>
+    <div class="container text-center">
+        <button class="btn btn-success"  type="submit">
+            Create
+        </button>
+    </div>
+</form>
+</div>
+{% endblock content %}

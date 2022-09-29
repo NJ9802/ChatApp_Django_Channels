@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container d-flex">
+    <div class="container">
+        <div class="container text-center">
+            <h1>Chats</h1>
+        </div>
+
+        <div class="container d-flex flex-column">
+            {% for chat in request.user.chats.all %}
+            <a href="chat/conversation/{{ chat.name }}" class="btn btn-success mb-3">
+                {{chat.user_2}}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <br>
+
+    <div class="container">
+        <div class="container text-center">
+            <h1>Groups</h1>
+        </div>
+
+        <div class="container d-flex flex-column">
+            {% for group in groups %}
+            <a class="btn btn-outline-secondary mb-3" href="chatroom/room{{group.id}}">{{ group }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container fixed-bottom">
+        <div class="d-flex justify-content-between">
+            <a class="btn btn-primary" href="/chat/contacts">New Message</a>
+
+            <a class="btn btn-secondary" href="/chat/new_group">New Group</a>
+        </div>
+        <div >
+            <br>
+        </div>
+    </div>
+</div> 
+{% endblock content %}

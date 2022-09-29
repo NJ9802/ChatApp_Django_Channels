@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-center">
+    <div class="container">
+        <h1>Conversation</h1>
+    </div>
+    
+    <div class="container">
+        <textarea class="form-control"
+        name="" id="chat_area" cols="50" rows="10" readonly></textarea>
+    </div>
+
+    <div class="container fixed-bottom">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Text here" id="chat_input">
+            <button class="btn btn-primary" id="chat_button">Send</button>
+        </div>
+        
+        <div>
+            <br><br>
+        </div>
+        
+    </div>
+
+
+    {{ chat_name|json_script:'chat-name'}}
+    {{ request.user.username|json_script:'username'}}
+
+</div>
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+    const roomName = JSON.parse(document.getElementById('chat-name').textContent);
+    const user_username = JSON.parse(document.getElementById('username').textContent);
+
+    document.querySelector('#chat_button').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat_input');
+            const message = messageInputDom.value;
+            roomsocket.send(JSON.stringify({
+                'message':message,
+                'username': user_username,
+            }));
+            messageInputDom.value = '';
+        };    
+    
+    const roomsocket = new WebSocket(
+            'ws://' + 
+            window.location.host +
+            '/ws/chat/' + 
+            roomName +
+            '/'
+        );
+    
+        document.querySelector('#chat_input').focus();
+        document.querySelector('#chat_input').onkeyup = function (e) {
+            if (e.keyCode == 13) {
+                document.querySelector('#chat_button').click();
+            }
+        };
+
+    roomsocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            console.log(data)
+            
+            document.querySelector('#chat_area').value += (data.username + ': '+
+            data.message + '\n')
+        }
+
+</script>
+{% endblock script %}
