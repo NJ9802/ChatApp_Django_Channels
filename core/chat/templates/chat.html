@@ -1,14 +1,27 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <div class="container text-center">
     <div class="container">
         <h1>Conversation</h1>
     </div>
     
-    <div class="container">
-        <textarea class="form-control"
-        name="" id="chat_area" cols="50" rows="10" readonly></textarea>
+    <div class="container text-center">
+        <p id="typing"></p>
+    </div>
+
+    <div class="container chat_area" id="chat_area">
+        {% for message in chat_messages %}
+       
+        <div class="container">
+            <p>{{message.user.username}}</p>
+            <p>{{message.body}}</p>
+        </div>
+        <hr>
+       
+        {% endfor %}
+        <!-- <textarea class="form-control"
+        name="" id="chat_area" cols="50" rows="10" readonly></textarea> -->
     </div>
 
     <div class="container fixed-bottom">
@@ -26,49 +39,14 @@
 
     {{ chat_name|json_script:'chat-name'}}
     {{ request.user.username|json_script:'username'}}
-
+    {{ message|json_script:'message'}}
 </div>
 {% endblock %}
 
 
 
 {% block script %}
-<script>
-    const roomName = JSON.parse(document.getElementById('chat-name').textContent);
-    const user_username = JSON.parse(document.getElementById('username').textContent);
+    <script src="{% static 'chat/js/chat-script.js' %}"></script>
 
-    document.querySelector('#chat_button').onclick = function (e) {
-            const messageInputDom = document.querySelector('#chat_input');
-            const message = messageInputDom.value;
-            roomsocket.send(JSON.stringify({
-                'message':message,
-                'username': user_username,
-            }));
-            messageInputDom.value = '';
-        };    
-    
-    const roomsocket = new WebSocket(
-            'ws://' + 
-            window.location.host +
-            '/ws/chat/' + 
-            roomName +
-            '/'
-        );
-    
-        document.querySelector('#chat_input').focus();
-        document.querySelector('#chat_input').onkeyup = function (e) {
-            if (e.keyCode == 13) {
-                document.querySelector('#chat_button').click();
-            }
-        };
 
-    roomsocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            console.log(data)
-            
-            document.querySelector('#chat_area').value += (data.username + ': '+
-            data.message + '\n')
-        }
-
-</script>
 {% endblock script %}

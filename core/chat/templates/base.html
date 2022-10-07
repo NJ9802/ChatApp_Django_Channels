@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,26 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatApp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'chat/styles/style.css' %}">
 </head>
 <body>
-    <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/chat">ChatApp</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-              <a class="nav-link" aria-current="Index" href="/chat">Home</a>
-              <a class="nav-link" href="contacts">New Message</a>
-              <a class="nav-link" href="new_group">New Group</a>
-              <a class="nav-link disabled">Comming Soon</a>
-            </div>
-          </div>
-        </div>
-      </nav>
+    {% include 'navbar.html' %}
     <br>
+
+    {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  
     {% block content %}
+    
     
     {% endblock content %}
     

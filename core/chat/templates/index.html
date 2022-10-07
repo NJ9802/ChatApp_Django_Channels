@@ -1,39 +1,73 @@
 {% extends 'base.html' %}
+
+
+
 {% block content %}
-<div class="container d-flex">
-    <div class="container">
-        <div class="container text-center">
-            <h1>Chats</h1>
+<style>
+    .index {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .linebreak {
+        max-width: 100%;
+
+    
+    }
+
+    .items-containers {
+        max-width: 70%;
+    }
+</style>
+
+<div class="container text-center">
+    <h1>Hello @{{request.user}}</h1>
+    <hr>
+</div>
+
+<br>
+<div class="container">
+    <div class="index">
+        <div class="container">
+            <div class="container text-center">
+                <h1>Chats</h1>
+                <hr class="linebreak">
+            </div>
+
+            <div class="container d-flex items-containers flex-column">
+                {% for chat in chats %}
+                <a href="{% url 'deleteChat' chat.id %}">Delete</a>
+                <a href="{% url 'chat' chat.name %}" class="btn btn-success mb-3">
+                    @{{chat.user_2}}
+                </a>
+                {% endfor %}
+            </div>
         </div>
 
-        <div class="container d-flex flex-column">
-            {% for chat in request.user.chats.all %}
-            <a href="chat/conversation/{{ chat.name }}" class="btn btn-success mb-3">
-                {{chat.user_2}}
-            </a>
-            {% endfor %}
-        </div>
-    </div>
+        
 
-    <br>
+        <div class="container">
+            <div class="container text-center">
+                <h1>Groups</h1>
+                <hr class="linebreak">
+            </div>
 
-    <div class="container">
-        <div class="container text-center">
-            <h1>Groups</h1>
-        </div>
-
-        <div class="container d-flex flex-column">
-            {% for group in groups %}
-            <a class="btn btn-outline-secondary mb-3" href="chatroom/room{{group.id}}">{{ group }}</a>
-            {% endfor %}
+            <div class="container d-flex items-containers flex-column">
+                {% for group in groups %}
+                {% if group.host == request.user %}
+                <a href="{% url 'deleteGroup' group.id %}">Delete</a>
+                {% endif %}
+                <a class="btn btn-outline-secondary mb-3" href="chatroom/{{group.id}}">{{ group }}</a>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
     <div class="container fixed-bottom">
         <div class="d-flex justify-content-between">
-            <a class="btn btn-primary" href="/chat/contacts">New Message</a>
+            <a class="btn btn-primary" href="{% url 'contacts' %}">New Message</a>
 
-            <a class="btn btn-secondary" href="/chat/new_group">New Group</a>
+            <a class="btn btn-secondary" href="{% url 'group' %}">New Group</a>
         </div>
         <div >
             <br>
