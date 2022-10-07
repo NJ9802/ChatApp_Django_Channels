@@ -1,6 +1,18 @@
 const roomName = JSON.parse(document.getElementById('chat-name').textContent);
 const user_username = JSON.parse(document.getElementById('username').textContent);
-const messagea = JSON.parse(document.getElementById('message').textContent);
+
+// crea un nuevo objeto `Date`
+let today = new Date();
+ 
+// obtener la fecha y la hora
+let now = today.toLocaleString();
+// console.log(now);
+ 
+/*
+    Resultado: 1/27/2020, 9:30:00 PM
+*/
+
+
 
 document.querySelector('#chat_button').onclick = function (e) {
         const messageInputDom = document.querySelector('#chat_input');
@@ -9,6 +21,7 @@ document.querySelector('#chat_button').onclick = function (e) {
             'message':message,
             'username': user_username,
             'chatname': roomName,
+            'datetime': now
         }));
         messageInputDom.value = '';
     };    
@@ -41,8 +54,9 @@ roomsocket.onmessage = function (e) {
         console.log(data)
         
         let html = '<div class="container">';
-            html += '<p>' + data.username + '</p>';
-            html += '<p>' + data.message + '</p></div><hr>';
+            html += '<p>' + data.username+ ':' + '</p>';
+            html += '<p>' + data.message + '</p>';
+            html += '<small>' + data.datetime +'</small></div><hr>';
         
         document.querySelector('#chat_area').innerHTML += html;
         scrollToBottom()
@@ -58,6 +72,4 @@ roomsocket.onmessage = function (e) {
         
     
     scrollToBottom()
-        // document.querySelector('#chat_area').value += (data.username + ': '+
-        // data.message + messagea + '\n')
-    
+        

@@ -1,4 +1,5 @@
 import json
+
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 
@@ -31,7 +32,8 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         message = text_data_json['message']
         username = text_data_json['username']
         chatname = text_data_json['chatname']
-
+        datetime = text_data_json['datetime']
+        
         await self.save_message(username, chatname, message)
 
         await self.channel_layer.group_send(
@@ -41,6 +43,7 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
                 'message': message,
                 'username': username,
                 'chatname': chatname,
+                'datetime': datetime
             }
         )
 
@@ -48,11 +51,13 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         message = event['message']
         username = event['username']
         chatname = event['chatname']
+        datetime = event['datetime']
         
         await self.send(text_data=json.dumps({
             'message':message,
             'username':username,
             'chatname':chatname,
+            'datetime':datetime,
         }))
 
     @sync_to_async
@@ -63,4 +68,8 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
 
         message = Message.objects.create(user=user, body=message)
         message.chats.set(chats)
+        chats[0].last_message = f'{message.body[:30]}...'
+        chats[1].last_message = f'{message.body[:30]}...'
         message.save()
+        chats[0].save()
+        chats[1].save()

@@ -37,8 +37,12 @@
             <div class="container d-flex items-containers flex-column">
                 {% for chat in chats %}
                 <a href="{% url 'deleteChat' chat.id %}">Delete</a>
-                <a href="{% url 'chat' chat.name %}" class="btn btn-success mb-3">
-                    @{{chat.user_2}}
+                <a href="{% url 'chat' chat.name %}">
+                    <div class="btn btn-primary">
+                        <p>@{{chat.user_2}}</p>
+                        <p>{{ chat.last_message }}</p>
+                        
+                    </div>  
                 </a>
                 {% endfor %}
             </div>
