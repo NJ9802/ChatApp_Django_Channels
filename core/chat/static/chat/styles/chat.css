@@ -1,0 +1,14 @@
+.messages-items {
+    max-width: 280px;
+    color: aliceblue;
+    border-radius: 10px 10px 10px 10px;
+}
+
+.time {
+    min-width: 60px;
+}
+
+.chat_area {
+    margin: auto;
+    max-width: 600px;
+}

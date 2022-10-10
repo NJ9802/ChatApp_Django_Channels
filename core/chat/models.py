@@ -36,7 +36,8 @@ class Group(models.Model):
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField(blank=True, null=True)
-    chats = models.ManyToManyField(Chat, related_name='messages')
+    chats = models.ManyToManyField(Chat, related_name='messages', null=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -44,4 +45,4 @@ class Message(models.Model):
     
 
     def __str__(self):
-        return self.body[:10]
+        return self.body[:30]

@@ -1,40 +1,39 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'chat/styles/chat.css' %}">
+{% endblock head %}
+
 {% block content %}
-<div class="container text-center">
-    <div class="container">
+<div class="container">
+    <div class="container text-center">
         <h1>Conversation</h1>
+        <hr>
     </div>
     
     <div class="container text-center">
         <p id="typing"></p>
     </div>
 
-    <div class="container chat_area" id="chat_area">
-        {% for message in chat_messages %}
-       
-        <div class="container">
-            <p>{{message.user.username}}:</p>
-            <p>{{message.body}}</p>
-            <small>{{message.created}}</small>
+    <div class="chat-body">
+        <div class="container chat_area" id="chat_area">
+            {% include 'messages_area.html' %}
+            <!-- <textarea class="form-control"
+            name="" id="chat_area" cols="50" rows="10" readonly></textarea> -->
         </div>
-        <hr>
-       
-        {% endfor %}
-        <!-- <textarea class="form-control"
-        name="" id="chat_area" cols="50" rows="10" readonly></textarea> -->
-    </div>
 
-    <div class="container fixed-bottom">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Text here" id="chat_input">
-            <button class="btn btn-primary" id="chat_button">Send</button>
+        <div class="container fixed-bottom">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Text here" id="chat_input">
+                <button class="btn btn-primary" id="chat_button">Send</button>
+            </div>
+            
+            <div>
+                <br><br>
+            </div>
+            
         </div>
-        
-        <div>
-            <br><br>
-        </div>
-        
     </div>
 
 

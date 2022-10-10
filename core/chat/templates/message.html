@@ -1,0 +1,20 @@
+
+{% if request.user == message.user %}
+<div class="container m-1 d-flex justify-content-end">
+    <div class="messages-items bg-primary">
+{% else %}
+<div class="container m-1 d-flex justify-content-start">
+    <div class="messages-items bg-secondary">
+{% endif %}
+
+
+        <header><small class="mx-1">@{{message.user.username}}:</small></header>
+        <div class="d-flex">
+            <p class="mx-1">{{message.body}}</p>
+            <div class="d-flex align-items-end">
+                <small class="mx-1 time">{{message.created|date:'g:i a'}}</small>
+            </div>
+        </div>
+        
+    </div>
+</div>

@@ -1,12 +1,27 @@
 const user_username = JSON.parse(document.getElementById('user_username').textContent);
 const roomId = JSON.parse(document.getElementById('room-id').textContent);
 
+
+// crea un nuevo objeto `Date`
+let today = new Date();
+ 
+// obtener la fecha y la hora
+let now = today.toLocaleString();
+// console.log(now);
+ 
+/*
+    Resultado: 1/27/2020, 9:30:00 PM
+*/
+
 document.querySelector('#submit').onclick = function (e) {
     const messageInputDom = document.querySelector('#input');
     const message = messageInputDom.value;
     roomsocket.send(JSON.stringify({
         'message':message,
         'username': user_username,
+        'chatname': roomId,
+        'datetime': now,
+
     }));
     messageInputDom.value = '';
 }

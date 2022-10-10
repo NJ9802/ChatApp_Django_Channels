@@ -62,14 +62,25 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def save_message(self, username, chatname, message):
+        
+        if type(chatname) == int:
+            group = Group.objects.get(id=chatname)
+            user = User.objects.get(username=username)
 
-        user = User.objects.get(username=username)
-        chats = Chat.objects.filter(name=chatname)
+            Message.objects.create(
+                user=user,
+                group=group,
+                body=message
+            )
+        
+        else:
+            user = User.objects.get(username=username)
+            chats = Chat.objects.filter(name=chatname)
 
-        message = Message.objects.create(user=user, body=message)
-        message.chats.set(chats)
-        chats[0].last_message = f'{message.body[:30]}...'
-        chats[1].last_message = f'{message.body[:30]}...'
-        message.save()
-        chats[0].save()
-        chats[1].save()
+            message = Message.objects.create(user=user, body=message)
+            message.chats.set(chats)
+            chats[0].last_message = f'{message.body[:30]}...'
+            chats[1].last_message = f'{message.body[:30]}...'
+            message.save()
+            chats[0].save()
+            chats[1].save()
