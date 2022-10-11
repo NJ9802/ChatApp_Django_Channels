@@ -1,27 +1,36 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{% static 'chat/styles/login-register.css' %}">
+
+{% endblock %}
+
 {% block content %}
 {% if page == 'login' %}
-<div class="container text-center">
-    
-    <form action="" method="post">
-        {% csrf_token %}
-            <div>
-                <label class="form-label" for="username">Username:</label>
-                <input class="form-control" type="text" id="username" name="username" placeholder="Enter username">
-            </div>
-            <br>
-            <div>
-                <label class="form-label" for="password">Password:</label>
-                <input class="form-control" type="password" id="password" name="password" placeholder="Enter password">
-            </div>
-            <br>
-            <div>
-                <input class="btn btn-primary" type="submit" value="Login" id="input_button">
-            </div>
-    </form>
+<div class="container text-center general-container">
+    <div class="container form-container text-start">
+        <form action="" method="post">
+            {% csrf_token %}
+                <div>
+                    <label class="form-label" for="username">Username:</label>
+                    <input class="form-control" type="text" id="username" name="username" placeholder="Enter username">
+                </div>
+                <br>
+                <div>
+                    <label class="form-label" for="password">Password:</label>
+                    <input class="form-control" type="password" id="password" name="password" placeholder="Enter password">
+                </div>
+                <br>
+                <div>
+                    <input class="btn btn-primary" type="submit" value="Login" id="input_button">
+                </div>
+        </form>
+    </div>
     <br>
-    <p>Haven't a sign up yet?</p>
+    <p>Haven't a signed up yet?</p>
     <a href="{% url 'register' %}">Sign Up</a>
 </div>
 

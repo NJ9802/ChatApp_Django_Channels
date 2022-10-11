@@ -10,5 +10,13 @@
 
 .chat_area {
     margin: auto;
-    max-width: 600px;
+    max-width: 500px;
+}
+
+.send-input {
+    max-width: 500px;
+}
+
+.message-body {
+    max-width: 200px;
 }

@@ -3,10 +3,10 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required 
-from django.contrib.auth.forms import UserCreationForm
+
 from django.db.models import Q
-from .models import Chat, Group, Message
-from .forms import GroupForm
+from .models import Chat, Group
+from .forms import GroupForm, SignupForm
 
 # Create your views here.
 
@@ -15,7 +15,7 @@ from .forms import GroupForm
 
 def loginPage(request):
     
-
+    print('entra')
     page = 'login'
     
 
@@ -36,7 +36,7 @@ def loginPage(request):
             return redirect('index')
     
     context = {'page':page}
-    return render(request, 'login_register.html', context)
+    return render(request, 'Login_v1/login.html', context)
 
 #---------------------------------------------------------
 
@@ -51,10 +51,10 @@ def logoutPage(request):
 # --------Register------------------------------------------
 
 def registerPage(request):
-    form = UserCreationForm()
+    form = SignupForm()
     
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
@@ -69,7 +69,7 @@ def registerPage(request):
     context = {
         'form':form,
     }
-    return render(request, 'login_register.html', context)
+    return render(request, 'Login_v1/login.html', context)
 
 #---------------------------------------------------------
 

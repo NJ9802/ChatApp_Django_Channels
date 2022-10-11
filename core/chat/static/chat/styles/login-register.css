@@ -1,0 +1,9 @@
+.general-container {
+    max-width: fit-content;
+}
+
+.form-container {
+    
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px;
+}
