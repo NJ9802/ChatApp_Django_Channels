@@ -1,34 +1,48 @@
 {% extends 'base.html' %}
+
 {% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'chat/styles/chat.css' %}">
+{% endblock head %}
+
 {% block content %}
-    <div class="container text-center">
-        <div class="container">
-            <h1>Chat Room</h1>
+    <div class="container">
+        <div class="container text-center">
+            <div>
+                <h1>Chat Room</h1>
+            </div>
+            
             {% if not group.host == request.user %}
-            <form action="" method="post">
-                {% csrf_token %}
+            <div>
+                <form action="" method="post">
+                    {% csrf_token %}
 
-                <input type="submit" value="Exit from group">
+                    <input class="btn btn-outline-danger" type="submit" value="Exit from group">
 
-            </form>
+                </form>
+            </div>
             {% endif %}
+            <hr>
         </div>
         
-        <div class="container">
-            <textarea class="form-control"
-            name="" id="chat-text" cols="50" rows="10" readonly></textarea>
-        </div>
-    
-        <div class="container fixed-bottom">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Text here" id="input">
-                <button class="btn btn-primary" id="submit">Send</button>
+        <div class="chat-body">
+            <div class="container chat_area" id="chat_text">
+                {% include 'messages_area.html' %}
+                <!-- <textarea class="form-control"
+                name="" id="chat_area" cols="50" rows="10" readonly></textarea> -->
+            </div>    
+            <div class="container fixed-bottom send-input">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Text here" id="input">
+                    <button class="btn btn-primary" id="submit">Send</button>
+                </div>
+                
+                <div>
+                    <br><br>
+                </div>
+                
             </div>
-            
-            <div>
-                <br><br>
-            </div>
-            
         </div>
     </div>
     

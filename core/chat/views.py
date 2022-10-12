@@ -105,14 +105,22 @@ def index(request):
 @login_required(login_url='login')
 def room(request, pk):
     group = Group.objects.get(id=pk)
+    chat_messages = group.message_set.all()
+    
     if not request.user in group.users.all():
         messages.error(request,'No seas cotilla...')
         return redirect('index')
+    
     if request.method == 'POST':
         group.users.remove(request.user)
         return redirect('index')
 
-    return render(request, 'chatroom.html', {'group': group})
+
+    context = {
+        'group': group,
+        'chat_messages': chat_messages
+    }
+    return render(request, 'chatroom.html', context)
 
 #---------------------------------------------------------
 
