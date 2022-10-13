@@ -3,9 +3,9 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 
-from django.contrib.auth.models import User
 
-from .models import Message, Chat, Group
+
+from .models import Message, Chat, Group, User
 
 class ChatRoomConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -79,8 +79,10 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
 
             message = Message.objects.create(user=user, body=message)
             message.chats.set(chats)
-            chats[0].last_message = f'{message.body[:30]}...'
-            chats[1].last_message = f'{message.body[:30]}...'
+            chats[0].last_message = f'{message.body[:25]}...' if len(message.body) > 25 else f'{message.body}'
+            chats[1].last_message = f'{message.body[:25]}...' if len(message.body) > 25 else f'{message.body}'
+            chats[0].last_message_time = message.updated
+            chats[1].last_message_time = message.updated
             message.save()
             chats[0].save()
             chats[1].save()

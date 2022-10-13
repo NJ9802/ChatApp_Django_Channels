@@ -1,24 +1,12 @@
 {% extends 'base.html' %}
 
+{% load static %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'chat/styles/index.css' %}">
+{% endblock %}
 
 {% block content %}
-<style>
-    .index {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .linebreak {
-        max-width: 100%;
-
-    
-    }
-
-    .items-containers {
-        max-width: 70%;
-    }
-</style>
 
 <div class="container text-center">
     <h1>Hello @{{request.user}}</h1>
@@ -37,13 +25,39 @@
             <div class="container d-flex items-containers flex-column">
                 {% for chat in chats %}
                 <a href="{% url 'deleteChat' chat.id %}">Delete</a>
-                <a href="{% url 'chat' chat.name %}">
-                    <div class="btn btn-primary">
-                        <p>@{{chat.user_2}}</p>
-                        <p>{{ chat.last_message }}</p>
-                        
-                    </div>  
-                </a>
+
+                
+
+                    <div class="chat-item container shadow-sm">
+                        <div class="d-flex align-items-center">
+                            <div class="m-1">
+                                <img src="{{ chat.user_2.avatar.url }}" alt="photo">
+                            </div>   
+                            
+                            <a class="container-fluid" href="{% url 'chat' chat.name %}">
+                                <div class="container">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="m-0 fw-bold">@{{chat.user_2}}</p>
+                                        </div>
+                                        <div>
+                                            <small>{{ chat.last_message_time|date:'g:i a' }}</small>
+                                        </div>
+                                    </div>
+                                
+                                
+                                    <div>
+                                        <p>{{ chat.last_message }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    
+                
+                    </div>
+                
+                
+                
                 {% endfor %}
             </div>
         </div>

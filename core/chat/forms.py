@@ -1,12 +1,11 @@
 from django import forms
-from .models import Group
+from .models import Group, User
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 
 class SignupForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2',]
+        fields = ['username', 'password1', 'password2', 'avatar']
 
 
 class GroupForm(forms.ModelForm):

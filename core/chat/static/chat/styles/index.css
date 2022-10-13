@@ -1,0 +1,31 @@
+.index {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.linebreak {
+    max-width: 100%;
+
+
+}
+
+.items-containers {
+    max-width: 70%;
+}
+
+.chat-item {
+    min-width: 70%;
+    background: rgb(169, 252, 217);
+    border-radius: 10px;
+}
+
+a {
+    color: rgb(12, 12, 12);
+    text-decoration: none;
+}
+
+.chat-item img {
+    border-radius: 50%;
+    max-width: 50px;
+    max-height: 50px;
+}
