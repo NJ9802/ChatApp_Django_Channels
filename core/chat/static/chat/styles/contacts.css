@@ -1,13 +1,17 @@
-.index {
+.contacts-container {
     margin: auto;
-    max-width: 450px;
+    max-width: 550px;
 }
 
-.linebreak {
-    max-width: 100%;
-
+button {
+    border: none;
+    
 
 }
+
+
+
+
 
 .items-containers {
     max-width: 100%;

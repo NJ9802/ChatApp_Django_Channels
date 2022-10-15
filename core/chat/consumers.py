@@ -67,22 +67,26 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
             group = Group.objects.get(id=chatname)
             user = User.objects.get(username=username)
 
-            Message.objects.create(
-                user=user,
-                group=group,
-                body=message
-            )
+            group_message = Message.objects.create(
+                                                    user=user,
+                                                    group=group,
+                                                    body=message,
+                                                )
+
+            group.last_message = f'{message[:20]}...' if len(message) > 20 else f'{message}'
+            group.last_message_time = group_message.updated
+            group.save()
         
         else:
             user = User.objects.get(username=username)
             chats = Chat.objects.filter(name=chatname)
 
-            message = Message.objects.create(user=user, body=message)
-            message.chats.set(chats)
-            chats[0].last_message = f'{message.body[:25]}...' if len(message.body) > 25 else f'{message.body}'
-            chats[1].last_message = f'{message.body[:25]}...' if len(message.body) > 25 else f'{message.body}'
-            chats[0].last_message_time = message.updated
-            chats[1].last_message_time = message.updated
-            message.save()
+            chat_message = Message.objects.create(user=user, body=message)
+            chat_message.chats.set(chats)
+            chats[0].last_message = f'{message[:20]}...' if len(message) > 20 else f'{message}'
+            chats[1].last_message = f'{message[:20]}...' if len(message) > 20 else f'{message}'
+            chats[0].last_message_time = chat_message.updated
+            chats[1].last_message_time = chat_message.updated
+            chat_message.save()
             chats[0].save()
             chats[1].save()

@@ -17,10 +17,7 @@
 <div class="container">
     <div class="index">
         <div class="container">
-            <div class="container text-center">
-                <h1>Chats</h1>
-                <hr class="linebreak">
-            </div>
+            
 
             <div class="container d-flex items-containers flex-column">
                 {% for chat in chats %}
@@ -31,7 +28,9 @@
                     <div class="chat-item container shadow-sm">
                         <div class="d-flex align-items-center">
                             <div class="m-1">
-                                <img src="{{ chat.user_2.avatar.url }}" alt="photo">
+                                <a href="{{ chat.user_2.avatar.url }}">
+                                    <img src="{{ chat.user_2.avatar.url }}" alt="photo">
+                                </a>
                             </div>   
                             
                             <a class="container-fluid" href="{% url 'chat' chat.name %}">
@@ -65,19 +64,54 @@
         
 
         <div class="container">
-            <div class="container text-center">
-                <h1>Groups</h1>
-                <hr class="linebreak">
-            </div>
+           
 
             <div class="container d-flex items-containers flex-column">
                 {% for group in groups %}
+    
                 {% if group.host == request.user %}
-                <a href="{% url 'deleteGroup' group.id %}">Delete</a>
+                    <a href="{% url 'deleteGroup' group.id %}">Delete</a>
                 {% endif %}
-                <a class="btn btn-outline-secondary mb-3" href="chatroom/{{group.id}}">{{ group }}</a>
+
+                
+
+                    <div class="chat-item container shadow-sm">
+                        <div class="d-flex align-items-center">
+                            <div class="m-1">
+                                <a href="{{ group.picture.url }}">
+                                    <img src="{{ group.picture.url }}" alt="photo">
+                                </a>
+                            </div>   
+                            
+                            <a class="container-fluid" href="chatroom/{{group.id}}">
+                                <div class="container">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <p class="m-0 fw-bold">{{ group }}</p>
+                                        </div>
+                                        <div>
+                                            <small>{{ group.last_message_time|date:'g:i a' }}</small>
+                                        </div>
+                                    </div>
+                                
+                                
+                                    <div>
+                                        <p>{{ group.last_message }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    
+                
+                    </div>
+                
+                
+                
                 {% endfor %}
             </div>
+        </div>
+            
+            
         </div>
     </div>
 

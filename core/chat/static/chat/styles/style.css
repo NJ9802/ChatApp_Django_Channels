@@ -2,13 +2,10 @@ body {
     min-height: 100vh;
     min-width: 100%;
     margin: 0 auto;
-    
+    background-image: linear-gradient(to left, #f6ffc2 0%, #b0c3ff 100%);
 }
 
-.contacts-container {
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-}
+
 
 .contacts-item-container {
     max-width: fit-content;

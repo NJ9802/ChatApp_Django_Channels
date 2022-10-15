@@ -1,33 +1,73 @@
 {% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'chat/styles/contacts.css' %}">
+
+{% endblock %}
+
 {% block content %}
 <div class="contacts-container container">
     <div class="text-center container">
         <div class="container">
             <h1>Contacts</h1>
         </div>
+        
+        <div class="container">
+            <form class="d-flex" role="search" method="GET" action="{% url 'contacts' %}">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div><br>
+        
+        <div class="container  items-containers">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for contact in contacts %}
 
-        <div class="container text-center contacts-item-container">
-            <div class='list-group'>
-                <form action="" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {% for contact in contacts %}
+                {% if not request.user == contact %}
+                
 
-                    {% if not request.user == contact %}
-                    <button type="submit" name="contact" value="{{contact.id}}" class="list-group-item list-group-item-action">
-                        @{{contact}}
-                    </button>
-                    {% endif %}
+            
 
-                    {% endfor %}
-                </form>
-            </div>
+                <div class="chat-item container m-1 shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="m-1">
+                            <a href="{{ contact.avatar.url }}">
+                                <img src="{{ contact.avatar.url }}" alt="photo">
+                            </a>
+                        </div>   
+                        
+                        <button class="bg-transparent" type="submit" name="contact" value="{{contact.id}}">
+                            <div class="">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <p class="m-0 fw-bold">@{{ contact }}</p>
+                                    </div>
+                                    
+                                </div>
+                            
+                            
+                                <div>
+                                    <p>{{ contact.bio }}</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                
+            
+                </div>
+            
+                {% endif %}
+
+            
+            {% endfor %}
         </div>
     </div>
-    <div class="container">
-        <form class="d-flex" role="search" method="GET" action="{% url 'contacts' %}">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        
+    
     </div>
+    
 </div>
 {% endblock content %}

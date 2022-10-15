@@ -9,6 +9,9 @@ class User(AbstractUser):
     bio = models.TextField(default="Hey, i'm using Chat App")
     avatar = models.ImageField(default='avatar.png')
 
+    class Meta:
+        ordering = ['username']
+
 
 class Chat(models.Model):
     name = models.CharField(max_length=50)
@@ -31,6 +34,9 @@ class Group(models.Model):
     host = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=50)
     users = models.ManyToManyField(User, related_name='users')
+    last_message = models.CharField(max_length = 100, null=True)
+    last_message_time = models.DateTimeField(null=True)
+    picture = models.ImageField(default='group.png', null=True)
     
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
