@@ -9,7 +9,7 @@
 {% block content %}
 
 <div class="container text-center">
-    <h1>Hello @{{request.user}}</h1>
+    <h1>Hello <a href="{% url 'profile' request.user.id %}">@{{request.user}}</a></h1>
     <hr>
 </div>
 

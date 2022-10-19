@@ -257,3 +257,17 @@ def deleteGroups(request, pk):
     return render(request, 'deletePage.html', context)
 
 #---------------------------------------------------------
+
+# --------Profile------------------------------------------
+
+def profile(request, pk):
+    
+    user = User.objects.get(id=pk)
+
+    context = {
+        'user': user,
+    }
+    
+    return render(request, 'profile.html', context)
+
+#---------------------------------------------------------

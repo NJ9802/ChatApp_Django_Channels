@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container general-container">
+    <div class="image-container">
+        <img src="{{ user.avatar.url }}" alt="Profile Picture">
+        <a class="btn btn-success" role="button" href="">
+            Change Picture
+        </a>
+    </div>
+
+    <div class="bio-container">
+        <p>{{ user.bio }}</p>
+    </div>
+</div>
+
+{% endblock %}
