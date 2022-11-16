@@ -9,7 +9,7 @@ var hours = date.getHours();
 var minutes = date.getMinutes();
 
 // Check whether AM or PM
-var newformat = hours >= 12 ? 'pm' : 'am'; 
+var newformat = hours >= 12 ? 'p.m.' : 'a.m.'; 
 
 // Find current hour in AM-PM Format
 hours = hours % 12; 
@@ -70,11 +70,11 @@ roomsocket.onmessage = function (e) {
         
 
         if (user_username===data.username) {
-            mainDiv = '<div class="container mt-1 d-flex justify-content-end">';
+            mainDiv = '<div class="container m-1 d-flex justify-content-end">';
             headerDiv = '<div class="messages-items bg-primary">';
         }
         else {
-            mainDiv = '<div class="container mt-1 d-flex justify-content-start">';
+            mainDiv = '<div class="container m-1 d-flex justify-content-start">';
             headerDiv = '<div class="messages-items bg-secondary">';
         }
         let html = mainDiv;
@@ -83,7 +83,7 @@ roomsocket.onmessage = function (e) {
             html += '<div class="d-flex">';
             html += '<p class="mx-1">' + data.message + '</p>';
             html += '<div class="d-flex align-items-end">';
-            html += '<small class="mx-1 time">' + now + '</small>';
+            html += '<small class="ml-1 time">' + now + '</small>';
             html += '</div></div></div></div>';
 
 
