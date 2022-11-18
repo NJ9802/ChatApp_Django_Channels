@@ -6,8 +6,8 @@ services:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=mysql_ch@t
-      - MYSQL_DATABASE=db
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DB_NAME}
     volumes:
       - mysql:/var/lib/mysql
       - mysql_config:/etc/mysql
@@ -20,6 +20,8 @@ services:
       - 6379:6379
 
   web:
+    env_file:
+      - .env
     depends_on:
       - redisserver
     build:
@@ -27,7 +29,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./:/app
+      - ./core/:/app
     
 
 volumes:
