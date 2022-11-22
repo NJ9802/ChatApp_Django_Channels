@@ -26,10 +26,12 @@ services:
       - redisserver
     build:
       context: .
+    command: ["./entrypoint_a.sh", "${DATABASE_HOST}:${DATABASE_PORT}", "-s", "-t", "20", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     ports:
       - 8000:8000
     volumes:
       - ./core/:/app
+    restart: always
     
 
 volumes:
