@@ -1,17 +1,44 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'chat/styles/profile.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="container general-container">
-    <div class="image-container">
-        <img src="{{ user.avatar.url }}" alt="Profile Picture">
-        <a class="btn btn-success" role="button" href="">
-            Change Picture
-        </a>
+    <div class="image-container text-center">
+        
+        <a href="{{request.user.avatar.url}}">
+            <img class="profile-picture" src="{{ request.user.avatar.url }}" alt="Profile Picture">
+        </a>    
+        
+        <h3>@{{request.user}}</h3>
     </div>
 
-    <div class="bio-container">
-        <p>{{ user.bio }}</p>
+    <div class="bio-container text-center">
+        <p>{{ request.user.bio }}</p>
     </div>
+    
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container form-container text-center">
+            <div class="container m-2">
+                <label for="bio">Description</label>
+                <input class="forms-control" type="text" id="bio" name="bio" placeholder="Hey, i'm using Chat App">
+            </div>
+            
+            <div class="container m-2">
+                <label for="profile_picture">Profile Picture</label>
+                <input class="forms-control" type="file" id="profile_picture" name="profile_picture">
+            </div>
+            
+            <div class="container m-2">
+                <input type="submit" value="Submit">
+            </div>
+        </div>
+    </form>
 </div>
 
 {% endblock %}

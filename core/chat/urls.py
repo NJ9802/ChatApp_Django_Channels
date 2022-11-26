@@ -12,6 +12,6 @@ urlpatterns = [
     path('register', views.registerPage, name='register'),
     path('deleteChat/<int:pk>', views.deleteChats, name='deleteChat'),
     path('deleteGroup/<int:pk>', views.deleteGroups, name='deleteGroup'),
-    path('profile/<int:pk>', views.profile, name='profile'),
+    path('profile', views.profile, name='profile'),
 
 ]

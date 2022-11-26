@@ -24,6 +24,7 @@
           
           {% if request.user.is_authenticated %}
           <a class="nav-link" aria-current="Index" href="{% url 'index' %}">Home</a>
+          <a class="nav-link" aria-current="Profile" href="{% url 'profile' %}">Profile</a>
           <a class="nav-link" href="{% url 'contacts' %}">New Message</a>
           <a class="nav-link" href="{% url 'group' %}">New Group</a>
           <a class="nav-link" href="{% url 'logout' %}">Logout</a>

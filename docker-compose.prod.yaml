@@ -3,8 +3,8 @@ version: '3.8'
 services:
   mysqldb:
     image: mysql
-    ports:
-      - 3306:3306
+    expose:
+      - ${DATABASE_PORT}
     env_file:
       - .env.prod
     volumes:
@@ -15,8 +15,8 @@ services:
     depends_on:
         - mysqldb
     image: redis
-    ports:
-      - 6379:6379
+    expose:
+      - ${REDIS_PORT}
 
   web:
     env_file:
@@ -32,7 +32,6 @@ services:
       - redisserver
     expose:
       - 8000
-      - 9000
     restart: always
 
   nginx:

@@ -30,7 +30,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./core/:/app
+      - ./core/:/home/app/web
     restart: always
     
 

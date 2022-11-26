@@ -6,6 +6,8 @@ Tecnologies used:
 -Django
 -Channels
 -Daphne
+-Gunicorn
+-Nginx
 -Mysql
 -Redis
 -Docker

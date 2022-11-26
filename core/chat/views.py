@@ -260,9 +260,21 @@ def deleteGroups(request, pk):
 
 # --------Profile------------------------------------------
 
-def profile(request, pk):
+def profile(request):
     
-    user = User.objects.get(id=pk)
+    user = request.user
+    
+    if request.method == 'POST':
+        bio = request.POST.get('bio')
+        profile_picture = request.FILES.get('profile_picture')
+        
+        if not bio:
+            user.bio = "Hey, i'm using Chat App"
+        else:
+            user.bio = bio
+        
+        user.avatar = profile_picture
+        user.save()
 
     context = {
         'user': user,
