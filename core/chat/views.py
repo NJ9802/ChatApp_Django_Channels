@@ -15,7 +15,6 @@ from .forms import GroupForm, SignupForm
 
 def loginPage(request):
     
-    print('entra')
     page = 'login'
     
 
@@ -135,21 +134,22 @@ def contacts(request):
         
         user_2_id = request.POST.get('contact')
         user_2 = User.objects.get(id=user_2_id)
-        
+        user_id_list = sorted([request.user.id, int(user_2_id)])
         try:
             try:
-                chat = Chat.objects.get(name=f'{request.user.id}_chat_{user_2_id}', user_2=user_2)
+                chat = Chat.objects.get(name=f'{user_id_list[0]}_chat_{user_id_list[1]}', user_2=user_2)
             except:
-                chat = Chat.objects.get(name=f'{user_2_id}_chat_{request.user.id}', user_2=user_2)
+
+                chat = Chat.objects.get(name=f'{user_id_list[0]}_chat_{user_id_list[1]}', user_2=request.user.id)
         except:
             chat = Chat.objects.create(
-            name = f'{request.user.id}_chat_{user_2_id}',
+            name = f'{user_id_list[0]}_chat_{user_id_list[1]}',
             user_1 = request.user,
             user_2 = user_2
             )
             
             chat_2 = Chat.objects.create(
-                name = f'{request.user.id}_chat_{user_2_id}',
+                name = f'{user_id_list[0]}_chat_{user_id_list[1]}',
                 user_1 = user_2,
                 user_2 = request.user
             )
@@ -177,6 +177,11 @@ def contacts(request):
 def chat(request, chat_name):
     
     chat = Chat.objects.filter(name=chat_name)
+    
+    if not chat:
+        messages.error(request,'The chat has been deleted...')
+        return redirect('index')
+    
     participants = (chat[0].user_1, chat[0].user_2)
 
     chat_messages = chat[0].messages.all()
@@ -228,13 +233,17 @@ def create_group(request):
 
 def deleteChats(request, pk):
     object = Chat.objects.get(id=pk)
-    
+    objects = Chat.objects.filter(name=object.name)
+
     if request.method == 'POST':
-        object.delete()
+        for obj in objects:
+            obj.delete()
+        
         return redirect('index')
 
     context = {
         'object':object,
+        'advise': 'The conversation will be deleted for both',
     }
 
     return render(request, 'deletePage.html', context)
