@@ -278,11 +278,14 @@ def profile(request):
         profile_picture = request.FILES.get('profile_picture')
         
         if not bio:
-            user.bio = "Hey, i'm using Chat App"
+            pass
         else:
             user.bio = bio
         
-        user.avatar = profile_picture
+        if not profile_picture:
+            pass
+        else:    
+            user.avatar = profile_picture
         user.save()
 
     context = {

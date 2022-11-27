@@ -21,24 +21,51 @@
         <p>{{ request.user.bio }}</p>
     </div>
     
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="container form-container text-center">
-            <div class="container m-2">
-                <label for="bio">Description</label>
-                <input class="forms-control" type="text" id="bio" name="bio" placeholder="Hey, i'm using Chat App">
-            </div>
-            
-            <div class="container m-2">
-                <label for="profile_picture">Profile Picture</label>
-                <input class="forms-control" type="file" id="profile_picture" name="profile_picture">
-            </div>
-            
-            <div class="container m-2">
-                <input type="submit" value="Submit">
-            </div>
-        </div>
-    </form>
+    
 </div>
-
+<div class="container text-center">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Edit Profile
+    </button>
+</div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Profile Info</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="container form-container">
+                    <div class="container m-2">
+                        <label class="form-label" for="bio">Description:</label>
+                        <input class="form-control" type="text" id="bio" name="bio" placeholder="Hey, i'm using Chat App">
+                    </div>
+                    
+                    <div class="container m-2">
+                        <label class="form-label" for="profile_picture">Profile Picture:</label>
+                        <input class="form-control" type="file" id="profile_picture" name="profile_picture">
+                    </div>
+                </div>
+            
+        
+        </div>
+            
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        
+                    <input type="submit" class="btn btn-primary" value="Confirm">
+                
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+  
 {% endblock %}
