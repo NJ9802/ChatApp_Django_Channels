@@ -20,3 +20,13 @@
 .message-body {
     max-width: 200px;
 }
+
+.chat-head {
+    margin: auto;
+    max-width: 500px;
+}
+.chat-head img {
+border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}

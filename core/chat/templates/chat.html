@@ -7,9 +7,15 @@
 
 {% block content %}
 <div class="container">
-    <div class="container text-center">
-        <h1>Conversation</h1>
-        <hr>
+    <div class="container chat-head d-flex">
+        {% for participant in participants %}
+        {% if participant.username != request.user.username %}
+        <a href="{{participant.avatar.url}}">
+            <img src="{{participant.avatar.url}}" alt="Profile Picture">
+        </a>
+        <h4 class="mx-2">@{{participant.username}}</h4>
+        {% endif %}
+        {% endfor %}
     </div>
     
     <div class="container text-center">

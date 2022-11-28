@@ -16,3 +16,11 @@ body {
     overflow-y: auto;
 
 }
+
+.notifications {
+    background-color: rgb(206, 27, 27);
+    border-radius: 50%;
+    position: relative;
+    right: 15px;
+    top: 10px;
+}

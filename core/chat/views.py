@@ -183,6 +183,7 @@ def chat(request, chat_name):
         return redirect('index')
     
     participants = (chat[0].user_1, chat[0].user_2)
+    
 
     chat_messages = chat[0].messages.all()
 
@@ -193,6 +194,7 @@ def chat(request, chat_name):
     
     
     context = {
+        'participants': participants,
         'chat_name' : chat_name,
         'chat_messages': chat_messages
         
