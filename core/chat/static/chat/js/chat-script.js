@@ -66,7 +66,7 @@ const roomsocket = new WebSocket(
 
 roomsocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
-        // console.log(data)
+        console.log(data)
         
 
         if (user_username===data.username) {
