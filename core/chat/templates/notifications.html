@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+Notifications
+
+{% for notification, count in notifications.items %}
+<div>
+    <a href="{{notification.link}}">
+        {{notification}} sends you {{count.0}} messages.
+    </a>
+</div>
+{% endfor %}
+
+{% endblock %}
+

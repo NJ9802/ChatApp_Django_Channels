@@ -1,14 +1,25 @@
-const room_name = 'notifications'
+const userId = JSON.parse(document.getElementById('userId').textContent);
+let userUnreadNotifications = JSON.parse(document.getElementById('userUnreadNotifications').textContent);
 
-let count = 1
-const notificationsSocket = new WebSocket (
-    `ws://${window.location.host}/ws/chatapp/notifications/${room_name}`
-)
+const url1 = `ws://${window.location.host}/ws/chatapp/notifications/${userId}`;
 
-notificationsSocket.onmessage = function (e) {
+document.getElementById('notifications').innerHTML = userUnreadNotifications;
+
+if (userUnreadNotifications === 0) {
+    document.getElementById('notifications').innerHTML = '';
+
+}
+
+console.log(document.getElementById('notifications'));
+
+const notificationsSocket1 = new WebSocket (url1);
+
+notificationsSocket1.onmessage = function (e) {
     const data = JSON.parse(e.data);
     console.log(data);
         
-    document.querySelector('#notifications').innerHTML = count;    
-    count = count + 1;
-}
+    userUnreadNotifications = userUnreadNotifications + 1;
+    document.getElementById('notifications').innerHTML = userUnreadNotifications;
+
+};
+

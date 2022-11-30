@@ -8,6 +8,7 @@ class User(AbstractUser):
     
     bio = models.TextField(default="Hey, i'm using Chat App")
     avatar = models.ImageField(default='avatar.png')
+    unread_notifications = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['username']
@@ -60,3 +61,12 @@ class Message(models.Model):
 
     def __str__(self):
         return self.body[:30]
+
+class Notifications(models.Model):
+    body = models.CharField(max_length=50)
+    from_to = models.ForeignKey(User, on_delete=models.CASCADE)
+    to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='destinatary')
+    link = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f'Notification from {self.from_to} to {self.to}'

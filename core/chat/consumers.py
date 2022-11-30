@@ -5,26 +5,18 @@ from asgiref.sync import sync_to_async
 
 
 
-from .models import Message, Chat, Group, User
+from .models import Message, Chat, Group, User, Notifications
 
 class ChatRoomConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f'chat_{self.room_name}'
-        
-        # Add room group to channel layer
-        
+                
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
         
-        # Add notification group to channel layer
-        
-        await self.channel_layer.group_add(
-            'notifications',
-            self.channel_name
-        )
         await self.accept()
     
        
@@ -44,7 +36,6 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         
         await self.save_message(username, chatname, message)
 
-        # Send data to Room Group on channel layer
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -56,17 +47,6 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
             }
         )
 
-        # Send Notofications to Room Group on channel layer
-        await self.channel_layer.group_send(
-            'notifications',
-            {
-                'type' : 'lala',
-                'message': message,
-                'username': username,
-                'chatname': chatname,
-                'datetime': datetime
-            }
-        )
     async def chatroom_message(self, event):
         message = event['message']
         username = event['username']
@@ -80,18 +60,6 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
             'datetime':datetime,
         }))
 
-    async def lala(self, event):
-        message = 'noti'
-        username = 'noti'
-        chatname = 'noti'
-        datetime = 'noti'
-        
-        await self.send(text_data=json.dumps({
-            'message':message,
-            'username':username,
-            'chatname':chatname,
-            'datetime':datetime,
-        }))
 
     @sync_to_async
     def save_message(self, username, chatname, message):
@@ -124,6 +92,69 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
             chats[0].save()
             chats[1].save()
 
-class A(AsyncWebsocketConsumer):
-    async def conect(self):
+class NotificationConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.room_name = self.scope['url_route']['kwargs']['userId']
+        self.room_group_name = f'chat_{self.room_name}'
+        
+        print(self.room_group_name)
+
+        await self.channel_layer.group_add(
+            self.room_group_name,
+            self.channel_name
+        )
+
         await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        from_to = text_data_json['from_to']
+        to = text_data_json['to']
+
+        await self.sum_unread_notification(to, from_to)
+
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type' : 'notification',
+                'from_to': from_to,
+                'to': to,
+            }
+        )
+
+    async def notification(self, event):
+        from_to = event['from_to']
+        to = event['to']
+        
+        await self.send(text_data=json.dumps({
+            'from_to': from_to,
+            'to': to,
+        }))
+
+    @sync_to_async
+    def sum_unread_notification(self, userId, user2Id):
+        
+        to_user = User.objects.get(id=userId)
+        from_user = User.objects.get(id=user2Id)
+
+        to_user.unread_notifications += 1
+        to_user.save()
+
+
+        order_list=sorted([from_user.id, to_user.id])
+        
+        link = f'chat/conversation/{order_list[0]}_chat_{order_list[1]}'
+        body = f'@{from_user} sends you a message.'
+
+        notification = Notifications.objects.create(
+            body=body,
+            from_to=from_user,
+            to=to_user,
+            link=link,
+            )

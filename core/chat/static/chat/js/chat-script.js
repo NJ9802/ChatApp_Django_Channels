@@ -1,5 +1,7 @@
 const roomName = JSON.parse(document.getElementById('chat-name').textContent);
 const user_username = JSON.parse(document.getElementById('username').textContent);
+const user2Id = JSON.parse(document.getElementById('user2Id').textContent);
+
 
 // JavaScript function to
 // Display 12 hour format
@@ -30,6 +32,12 @@ let now = hours + ':' + minutes + ' ' + newformat;;
 document.querySelector('#chat_button').onclick = function (e) {
         const messageInputDom = document.querySelector('#chat_input');
         const message = messageInputDom.value;
+        
+        notificationsSocket2.send(JSON.stringify({
+            'from_to':userId,
+            'to': user2Id,
+        }));
+        
         roomsocket.send(JSON.stringify({
             'message':message,
             'username': user_username,
@@ -38,6 +46,9 @@ document.querySelector('#chat_button').onclick = function (e) {
         }));
         messageInputDom.value = '';
     };    
+
+const url2 = `ws://${window.location.host}/ws/chatapp/notifications/${user2Id}`
+const notificationsSocket2 = new WebSocket (url2)
 
 const roomsocket = new WebSocket(
         'ws://' + 

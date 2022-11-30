@@ -1,3 +1,4 @@
+from collections import defaultdict
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
@@ -5,7 +6,7 @@ from .models import User
 from django.contrib.auth.decorators import login_required 
 
 from django.db.models import Q
-from .models import Chat, Group
+from .models import Chat, Group, Notifications
 from .forms import GroupForm, SignupForm
 
 # Create your views here.
@@ -295,5 +296,31 @@ def profile(request):
     }
     
     return render(request, 'profile.html', context)
+
+#---------------------------------------------------------
+
+# --------Notifications------------------------------------------
+
+def notifications(request):
+    
+    user = request.user
+    user.unread_notifications = 0
+    user.save() 
+
+    users_notifications = Notifications.objects.filter(to=user)
+    count_notifications_dict = defaultdict(lambda : 0)
+
+    for notification in users_notifications:
+        count_notifications_dict[notification.from_to] += 1
+
+    
+        
+
+    count_notifications_dict.default_factory = None
+
+    context = {
+        'notifications':count_notifications_dict,
+    }
+    return render(request, 'notifications.html', context)
 
 #---------------------------------------------------------

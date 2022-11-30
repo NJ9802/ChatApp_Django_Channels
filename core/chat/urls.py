@@ -13,5 +13,7 @@ urlpatterns = [
     path('deleteChat/<int:pk>', views.deleteChats, name='deleteChat'),
     path('deleteGroup/<int:pk>', views.deleteGroups, name='deleteGroup'),
     path('profile', views.profile, name='profile'),
+    path('profile', views.profile, name='profile'),
+    path('notifications', views.notifications, name='notifications'),
 
 ]
