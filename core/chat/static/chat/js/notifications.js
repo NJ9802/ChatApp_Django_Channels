@@ -10,13 +10,10 @@ if (userUnreadNotifications === 0) {
 
 }
 
-console.log(document.getElementById('notifications'));
-
 const notificationsSocket1 = new WebSocket (url1);
 
 notificationsSocket1.onmessage = function (e) {
     const data = JSON.parse(e.data);
-    console.log(data);
         
     userUnreadNotifications = userUnreadNotifications + 1;
     document.getElementById('notifications').innerHTML = userUnreadNotifications;

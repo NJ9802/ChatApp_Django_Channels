@@ -34,12 +34,13 @@ document.querySelector('#chat_button').onclick = function (e) {
         const message = messageInputDom.value;
         
         notificationsSocket2.send(JSON.stringify({
+            'chatname': roomName,
             'from_to':userId,
             'to': user2Id,
         }));
         
         roomsocket.send(JSON.stringify({
-            'message':message,
+            'message': message,
             'username': user_username,
             'chatname': roomName,
             'datetime': now
@@ -77,7 +78,6 @@ const roomsocket = new WebSocket(
 
 roomsocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
-        console.log(data)
         
 
         if (user_username===data.username) {

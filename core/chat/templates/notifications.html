@@ -4,15 +4,32 @@
 
 
 {% block content %}
-Notifications
-
-{% for notification, count in notifications.items %}
 <div>
-    <a href="{{notification.link}}">
-        {{notification}} sends you {{count}} messages.
-    </a>
+    <div class="container text-center">
+        <h2>Notifications</h2>
+    </div>
+    {% if not notifications %}
+        <h6>You don't have notifications</h6>
+    
+    {% else %}
+    <div class="container">
+        {% for notification in notifications %}
+        <div>
+            <a href="{{notification.link}}">
+                {% if notification.count > 1 %}
+                
+                    {{notification.from_to}} sendt you {{notification.count}} messages.
+                
+                {% else %}
+                
+                    {{notification.from_to}} sendt you {{notification.count}} message.
+                
+                {% endif %}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
-{% endfor %}
-
 {% endblock %}
 

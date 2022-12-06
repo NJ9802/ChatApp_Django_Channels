@@ -176,29 +176,24 @@ def contacts(request):
 
 @login_required(login_url='login')
 def chat(request, chat_name):
+
+    chat = Chat.objects.get(name=chat_name, user_1=request.user)
     
-    chat = Chat.objects.filter(name=chat_name)
-    
+    try:
+        Notifications.objects.get(chat=chat).delete()
+    except:
+        pass
+        
     if not chat:
         messages.error(request,'The chat has been deleted...')
         return redirect('index')
     
-    participants = (chat[0].user_1, chat[0].user_2)
-    
-
-    chat_messages = chat[0].messages.all()
-
-    if not request.user in participants:
-        
+    if not request.user == chat.user_1:    
         messages.error(request,'No seas cotilla...')
         return redirect('index')
     
-    
     context = {
-        'participants': participants,
-        'chat_name' : chat_name,
-        'chat_messages': chat_messages
-        
+        'chat' : chat
     }
     return render(request, 'chat.html', context)
 
@@ -308,18 +303,9 @@ def notifications(request):
     user.save() 
 
     users_notifications = Notifications.objects.filter(to=user)
-    count_notifications_dict = defaultdict(lambda : 0)
-
-    for notification in users_notifications:
-        count_notifications_dict[notification.from_to] += 1
-
     
-        
-
-    count_notifications_dict.default_factory = None
-
     context = {
-        'notifications':count_notifications_dict,
+        'notifications':users_notifications,
     }
     return render(request, 'notifications.html', context)
 

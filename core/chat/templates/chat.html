@@ -8,15 +8,11 @@
 {% block content %}
 <div class="container">
     <div class="container chat-head d-flex">
-        {% for participant in participants %}
-        {% if participant.username != request.user.username %}
-        {{ participant.id|json_script:'user2Id'}}
-        <a href="{{participant.avatar.url}}">
-            <img src="{{participant.avatar.url}}" alt="Profile Picture">
+        <a href="{{chat.user_2.avatar.url}}">
+            <img src="{{chat.user_2.avatar.url}}" alt="Profile Picture">
         </a>
-        <h4 class="mx-2">@{{participant.username}}</h4>
-        {% endif %}
-        {% endfor %}
+        <h4 class="mx-2">@{{chat.user_2.username}}</h4>
+        
     </div>
     <div class="container text-center">
         <p id="typing"></p>
@@ -46,8 +42,10 @@
     </div>
 
 
-    {{ chat_name|json_script:'chat-name'}}
+    {{ chat.name|json_script:'chat-name'}}
     {{ request.user.username|json_script:'username'}}
+    {{ chat.user_2.id|json_script:'user2Id'}}
+
    
 </div>
 {% endblock %}

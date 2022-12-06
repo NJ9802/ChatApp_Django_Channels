@@ -63,10 +63,11 @@ class Message(models.Model):
         return self.body[:30]
 
 class Notifications(models.Model):
-    body = models.CharField(max_length=50)
     from_to = models.ForeignKey(User, on_delete=models.CASCADE)
     to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='destinatary')
     link = models.CharField(max_length=50)
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='unread_chat_notifications')
+    count = models.IntegerField(default=1)
 
     def __str__(self):
         return f'Notification from {self.from_to} to {self.to}'
