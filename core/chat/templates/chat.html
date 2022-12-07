@@ -11,8 +11,10 @@
         <a href="{{chat.user_2.avatar.url}}">
             <img src="{{chat.user_2.avatar.url}}" alt="Profile Picture">
         </a>
-        <h4 class="mx-2">@{{chat.user_2.username}}</h4>
-        
+        <div>
+            <h4 class="mx-2">@{{chat.user_2.username}}</h4>
+            <span class="m-2" id="online"></span>
+        </div>
     </div>
     <div class="container text-center">
         <p id="typing"></p>

@@ -78,30 +78,43 @@ const roomsocket = new WebSocket(
 
 roomsocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
+        console.log(data);
+        if (data.online === 'True') {
+            if (data.chatname === roomName) {
+                if (data.userId === user2Id) {
+                        document.getElementById('online').innerHTML = 'Online';
+                }
+            }
+        }
         
-
-        if (user_username===data.username) {
-            mainDiv = '<div class="container m-1 d-flex justify-content-end">';
-            headerDiv = '<div class="messages-items bg-primary">';
+        else if (data.online === 'False'){
+            document.getElementById('online').innerHTML = '';
         }
+        
         else {
-            mainDiv = '<div class="container m-1 d-flex justify-content-start">';
-            headerDiv = '<div class="messages-items bg-secondary">';
-        }
-        let html = mainDiv;
-            html += headerDiv;     
-            html += '<header><small class="mx-1">' + '@'+ data.username + ':' + '</small></header>';
-            html += '<div class="d-flex">';
-            html += '<p class="mx-1">' + data.message + '</p>';
-            html += '<div class="d-flex align-items-end">';
-            html += '<small class="ml-1 time">' + now + '</small>';
-            html += '</div></div></div></div>';
+
+            if (user_username===data.username) {
+                mainDiv = '<div class="container m-1 d-flex justify-content-end">';
+                headerDiv = '<div class="messages-items bg-primary">';
+            }
+            else {
+                mainDiv = '<div class="container m-1 d-flex justify-content-start">';
+                headerDiv = '<div class="messages-items bg-secondary">';
+            }
+            let html = mainDiv;
+                html += headerDiv;     
+                html += '<header><small class="mx-1">' + '@'+ data.username + ':' + '</small></header>';
+                html += '<div class="d-flex">';
+                html += '<p class="mx-1">' + data.message + '</p>';
+                html += '<div class="d-flex align-items-end">';
+                html += '<small class="ml-1 time">' + now + '</small>';
+                html += '</div></div></div></div>';
 
 
-        document.querySelector('#chat_area').innerHTML += html;
-        scrollToBottom()
-    }    
-     
+            document.querySelector('#chat_area').innerHTML += html;
+            scrollToBottom()
+        }    
+    }
     function scrollToBottom() {
     
         const objDiv = document.querySelector('#chat_area');

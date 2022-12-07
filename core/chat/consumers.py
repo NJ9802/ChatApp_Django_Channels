@@ -23,9 +23,27 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         await self.accept()
         await self.add_users_to_online(self.user, self.room_name)
 
-
+        await self.channel_layer.group_send(
+        self.room_group_name,
+        {
+            'type' : 'online',
+            'online': 'True',
+            'userId': self.user.id,
+            'chatname': self.room_name,
+        }
+        )
 
     async def disconnect(self, close_code):
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type' : 'offline',
+                'online': 'False',
+                'userId': self.user.id,
+                'chatname': self.room_name,
+            }
+            )
+
         await self.remove_users_from_online(self.user, self.room_name)
 
         await self.channel_layer.group_discard(
@@ -36,7 +54,6 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def add_users_to_online(self, user, room):
         users_online.append([user.id, room])
-
 
     @sync_to_async
     def remove_users_from_online(self, user, room):
@@ -75,6 +92,49 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
             'datetime':datetime,
         }))
 
+    async def online(self, event):
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type' : 'reply_online',
+                'online': 'True',
+                'userId': self.user.id,
+                'chatname': self.room_name,
+            }
+            )
+
+
+        online = event['online']
+        userId = event['userId']
+        chatname = event['chatname']
+
+        await self.send(text_data=json.dumps({
+            'online': online,
+            'userId': userId,
+            'chatname': chatname,
+        }))
+
+    async def offline(self, event):
+        online = event['online']
+        userId = event['userId']
+        chatname = event['chatname']
+
+        await self.send(text_data=json.dumps({
+            'online': online,
+            'userId': userId,
+            'chatname': chatname,
+        }))
+
+    async def reply_online(self, event):
+        online = event['online']
+        userId = event['userId']
+        chatname = event['chatname']
+
+        await self.send(text_data=json.dumps({
+            'online': online,
+            'userId': userId,
+            'chatname': chatname,
+        }))
 
     @sync_to_async
     def save_message(self, username, chatname, message):
@@ -135,11 +195,8 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         for info in users_online:
             if int(to) == info[0] and chatname == info[1]:
                 send = False
-                print('no send')
        
-        print(send)
         if send:
-            print('se envio')
             await self.sum_unread_notification(to, from_to, chatname)
 
         await self.channel_layer.group_send(
@@ -174,33 +231,23 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         
         to_user = User.objects.get(id=userId)
         from_user = User.objects.get(id=user2Id)
-
-
         to_user.unread_notifications += 1
         to_user.save()
 
         chat_name = chatname
-        # order_list=sorted([from_user.id, to_user.id])
-        # chat_name = f'{order_list[0]}_chat_{order_list[1]}'
-
         chat_to_notificate = Chat.objects.get(name=chat_name, user_1=to_user)
-
-        
         link = f'chat/conversation/{chat_name}'
         
         try:
             notification = Notifications.objects.get(
-               
                 from_to=from_user,
                 to=to_user,
-                
                 )
             
             notification.count += 1
             notification.save()
 
         except:
-
             notification = Notifications.objects.create(
                 chat=chat_to_notificate, 
                 from_to=from_user,
