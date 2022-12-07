@@ -2,3 +2,4 @@ __pycache__
 .env
 .env*
 core/mediafiles/*
+!core/mediafiles/chat-dots.svg
