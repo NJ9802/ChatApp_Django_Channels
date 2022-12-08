@@ -61,23 +61,58 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-        username = text_data_json['username']
-        chatname = text_data_json['chatname']
-        datetime = text_data_json['datetime']
-        
-        await self.save_message(username, chatname, message)
+        try:
+            if text_data_json['writing'] == 'True':
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type' : 'writing',
+                        'writing': 'True',
+                        'userId': text_data_json['userId'],
+                    }
+                )
+            
+            else: 
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type' : 'writing',
+                        'writing': 'False',
+                        'userId': text_data_json['userId'],
+                    }
+                )
 
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type' : 'chatroom_message',
-                'message': message,
-                'username': username,
-                'chatname': chatname,
-                'datetime': datetime
-            }
-        )
+
+        except:
+            message = text_data_json['message']
+            username = text_data_json['username']
+            chatname = text_data_json['chatname']
+            datetime = text_data_json['datetime']
+            
+            await self.save_message(username, chatname, message)
+
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type' : 'chatroom_message',
+                    'message': message,
+                    'username': username,
+                    'chatname': chatname,
+                    'datetime': datetime
+                }
+            )
+    
+    async def writing(self, event):
+        if event['writing'] == 'True':
+            await self.send(text_data=json.dumps({
+                'writing':'True',
+                'userId': event['userId'],
+            }))
+        else:
+            await self.send(text_data=json.dumps({
+                'writing':'False',
+                'userId': event['userId'],
+            }))
 
     async def chatroom_message(self, event):
         message = event['message']

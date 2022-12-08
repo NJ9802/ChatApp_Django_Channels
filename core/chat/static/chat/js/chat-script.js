@@ -2,6 +2,7 @@ const roomName = JSON.parse(document.getElementById('chat-name').textContent);
 const user_username = JSON.parse(document.getElementById('username').textContent);
 const user2Id = JSON.parse(document.getElementById('user2Id').textContent);
 
+const online_div = document.getElementById('online')
 
 // JavaScript function to
 // Display 12 hour format
@@ -28,8 +29,11 @@ let now = hours + ':' + minutes + ' ' + newformat;;
  
 
 
+const input = document.querySelector('#chat_input')
+
 
 document.querySelector('#chat_button').onclick = function (e) {
+    if (input.value !== '') {
         const messageInputDom = document.querySelector('#chat_input');
         const message = messageInputDom.value;
         
@@ -46,7 +50,8 @@ document.querySelector('#chat_button').onclick = function (e) {
             'datetime': now
         }));
         messageInputDom.value = '';
-    };    
+    }
+};    
 
 const url2 = `ws://${window.location.host}/ws/chatapp/notifications/${user2Id}`
 const notificationsSocket2 = new WebSocket (url2)
@@ -59,20 +64,38 @@ const roomsocket = new WebSocket(
         '/'
     );
 
-    const input = document.querySelector('#chat_input')
     input.focus();
     input.onkeyup = function (e) {
         if (e.keyCode == 13) {
             document.querySelector('#chat_button').click();
         }
+
+        else {
+            setTimeout(() => {
+                roomsocket.send(JSON.stringify({
+                    'writing':'False',
+                    'userId': userId,
+                })
+                )    
+    
+            }, 2000);
+        }
     };
 
-    input.addEventListener('keydown', typing);
-
-    function typing () {
-        document.getElementById('typing').innerText = 'typing...';
-        document.getElementById('typing').innerText = '';
+    // Send typing data to consumer
+    input.focus();
+    input.onkeypress = function (e) {
+        if (e.key !== 'Enter') {
+            roomsocket.send(JSON.stringify({
+                'writing':'True',
+                'userId': userId,
+            })
+            )
+        }
     }
+
+
+
     let mainDiv;
     let headerDiv;
 
@@ -82,13 +105,27 @@ roomsocket.onmessage = function (e) {
         if (data.online === 'True') {
             if (data.chatname === roomName) {
                 if (data.userId === user2Id) {
-                        document.getElementById('online').innerHTML = 'Online';
+                        online_div.innerHTML = 'Online';
                 }
             }
         }
         
-        else if (data.online === 'False'){
-            document.getElementById('online').innerHTML = '';
+        else if (data.online === 'False') {
+            online_div.innerHTML = '';
+        }
+
+        else if (data.writing === 'True') {
+            if (data.userId !== userId) {
+                online_div.innerHTML = 'writing...';
+            }
+        }
+
+        else if (data.writing === 'False') {
+            if (data.userId !== userId) {
+                setTimeout(() => {
+                    online_div.innerHTML = 'online';            
+                }, 1000);
+            }
         }
         
         else {

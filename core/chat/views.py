@@ -177,17 +177,18 @@ def contacts(request):
 @login_required(login_url='login')
 def chat(request, chat_name):
 
-    chat = Chat.objects.get(name=chat_name, user_1=request.user)
-    
+    try:
+        chat = Chat.objects.get(name=chat_name, user_1=request.user)
+
+    except:    
+        messages.error(request,'The chat has been deleted...')
+        return redirect('index')
+
     try:
         Notifications.objects.get(chat=chat).delete()
     except:
         pass
-        
-    if not chat:
-        messages.error(request,'The chat has been deleted...')
-        return redirect('index')
-    
+            
     if not request.user == chat.user_1:    
         messages.error(request,'No seas cotilla...')
         return redirect('index')
@@ -230,8 +231,12 @@ def create_group(request):
 # --------Delete Chats------------------------------------------
 
 def deleteChats(request, pk):
-    object = Chat.objects.get(id=pk)
-    objects = Chat.objects.filter(name=object.name)
+    try:
+        object = Chat.objects.get(id=pk)
+        objects = Chat.objects.filter(name=object.name)
+    except:
+        messages.error(request,'The chat has been deleted...')
+        return redirect('index')
 
     if request.method == 'POST':
         for obj in objects:
@@ -251,8 +256,13 @@ def deleteChats(request, pk):
 # --------Delete Groups------------------------------------------
 
 def deleteGroups(request, pk):
-    object = Group.objects.get(id=pk)
-    
+    try:
+        object = Group.objects.get(id=pk)
+    except:
+        messages.error(request,'The group has been deleted...')
+        return redirect('index')
+
+
     if request.method == 'POST':
         object.delete()
         return redirect('index')
