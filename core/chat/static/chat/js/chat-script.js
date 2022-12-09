@@ -25,15 +25,23 @@ minutes = minutes < 10 ? '0' + minutes : minutes;
 //   hours + ':' + minutes + ' ' + newformat;
 // obtener la fecha y la hora
 let now = hours + ':' + minutes + ' ' + newformat;;
-// console.log(now);
  
 
 
 const input = document.querySelector('#chat_input')
+let intervalo;
 
 
 document.querySelector('#chat_button').onclick = function (e) {
     if (input.value !== '') {
+
+        clearInterval(intervalo);
+        roomsocket.send(JSON.stringify({
+            'writing':'False',
+            'userId': userId,
+            })
+        );
+
         const messageInputDom = document.querySelector('#chat_input');
         const message = messageInputDom.value;
         
@@ -70,31 +78,30 @@ const roomsocket = new WebSocket(
             document.querySelector('#chat_button').click();
         }
 
-        else {
-            setTimeout(() => {
-                roomsocket.send(JSON.stringify({
-                    'writing':'False',
-                    'userId': userId,
-                })
-                )    
-    
-            }, 2000);
-        }
     };
 
     // Send typing data to consumer
-    input.focus();
-    input.onkeypress = function (e) {
-        if (e.key !== 'Enter') {
-            roomsocket.send(JSON.stringify({
-                'writing':'True',
-                'userId': userId,
-            })
-            )
-        }
-    }
 
+    input.addEventListener("input", function(e){
+            console.log(e.data);
+            if (e.data !== null) {
+                roomsocket.send(JSON.stringify({
+                    'writing':'True',
+                    'userId': userId,
+                    })
+                );
 
+                clearInterval(intervalo); //Al escribir, limpio el intervalo
+                intervalo = setInterval(function(){ //Y vuelve a iniciar
+                    roomsocket.send(JSON.stringify({
+                        'writing':'False',
+                        'userId': userId,
+                        })
+                    );    
+                        clearInterval(intervalo); //Limpio el intervalo
+                }, 400);
+            }
+    }, false);
 
     let mainDiv;
     let headerDiv;
@@ -105,7 +112,7 @@ roomsocket.onmessage = function (e) {
         if (data.online === 'True') {
             if (data.chatname === roomName) {
                 if (data.userId === user2Id) {
-                        online_div.innerHTML = 'Online';
+                        online_div.innerHTML = 'online';
                 }
             }
         }
