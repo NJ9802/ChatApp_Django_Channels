@@ -1,7 +1,9 @@
-import json
+import json, datetime
 
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.db import database_sync_to_async
 from asgiref.sync import sync_to_async
+
 
 
 
@@ -33,7 +35,7 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         }
         )
 
-    async def disconnect(self, close_code):
+    async def disconnect(self, close_code):        
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -44,20 +46,24 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
             }
             )
 
+        await self.update_last_seen(self.user)
+
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type' : 'last_seen',
+                'last_seen_hour': datetime.datetime.now().hour,
+                'last_seen_minute': datetime.datetime.now().minute,
+                'userId': self.user.id,
+            }
+            )
+
         await self.remove_users_from_online(self.user, self.room_name)
 
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
-
-    @sync_to_async
-    def add_users_to_online(self, user, room):
-        users_online.append([user.id, room])
-
-    @sync_to_async
-    def remove_users_from_online(self, user, room):
-        users_online.remove([user.id, room])
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -171,7 +177,32 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
             'chatname': chatname,
         }))
 
+    async def last_seen(self, event):
+        last_seen_hour = event['last_seen_hour']
+        userId = event['userId']
+        last_seen_minute = event['last_seen_minute']
+
+        await self.send(text_data=json.dumps({
+            'last_seen': 'True',
+            'last_seen_hour': last_seen_hour,
+            'userId': userId,
+            'last_seen_minute': last_seen_minute,
+        }))
+
     @sync_to_async
+    def add_users_to_online(self, user, room):
+        users_online.append([user.id, room])
+
+    @sync_to_async
+    def remove_users_from_online(self, user, room):
+        users_online.remove([user.id, room])
+
+    @database_sync_to_async
+    def update_last_seen(self, user):
+        user.last_seen = datetime.datetime.now()
+        user.save()
+
+    @database_sync_to_async
     def save_message(self, username, chatname, message):
         
         if type(chatname) == int:
@@ -261,7 +292,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 'to': to,
             }))
 
-    @sync_to_async
+    @database_sync_to_async
     def sum_unread_notification(self, userId, user2Id, chatname):
         
         to_user = User.objects.get(id=userId)

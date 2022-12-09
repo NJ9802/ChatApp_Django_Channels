@@ -9,7 +9,7 @@ class User(AbstractUser):
     bio = models.TextField(default="Hey, i'm using Chat App")
     avatar = models.ImageField(default='avatar.png')
     unread_notifications = models.IntegerField(default=0)
-
+    last_seen = models.DateTimeField()
     class Meta:
         ordering = ['username']
 

@@ -13,7 +13,7 @@
         </a>
         <div>
             <h4 class="mx-2">@{{chat.user_2.username}}</h4>
-            <span class="m-2" id="online"></span>
+            <span class="m-2" id="online">last seen today at {{chat.user_2.last_seen|date:'g:i a'}}</span>
         </div>
     </div>
     <hr class="m-0">

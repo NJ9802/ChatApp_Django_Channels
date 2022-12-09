@@ -24,7 +24,7 @@ minutes = minutes < 10 ? '0' + minutes : minutes;
 // document.getElementById("change").innerHTML = 
 //   hours + ':' + minutes + ' ' + newformat;
 // obtener la fecha y la hora
-let now = hours + ':' + minutes + ' ' + newformat;;
+let now = hours + ':' + minutes + ' ' + newformat;
  
 
 
@@ -133,6 +133,26 @@ roomsocket.onmessage = function (e) {
                     online_div.innerHTML = 'online';            
                 }, 1000);
             }
+        }
+
+        else if (data.last_seen === 'True') {
+            let hour = data.last_seen_hour;
+            let minute = data.last_seen_minute;
+            let format = hour >= 12 ? 'p.m.' : 'a.m.'; 
+
+            // Find current hour in AM-PM Format
+            hour = hour % 12; 
+
+            // To display "0" as "12"
+            hour = hour ? hour : 12; 
+            minute = minute < 10 ? '0' + minute : minute;
+            // document.getElementById("change").innerHTML = 
+            //   hours + ':' + minutes + ' ' + newformat;
+            // obtener la fecha y la hora
+            let last_seen_time = hour + ':' + minute + ' ' + format;
+
+            online_div.innerHTML = "last seen " + "today " +"at "+ last_seen_time;
+            
         }
         
         else {
