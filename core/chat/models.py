@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from datetime import datetime
 
 # Create your models here.
 
@@ -9,7 +9,7 @@ class User(AbstractUser):
     bio = models.TextField(default="Hey, i'm using Chat App")
     avatar = models.ImageField(default='avatar.png')
     unread_notifications = models.IntegerField(default=0)
-    last_seen = models.DateTimeField()
+    last_seen = models.DateTimeField(default=datetime.now())
     class Meta:
         ordering = ['username']
 
