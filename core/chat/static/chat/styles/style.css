@@ -3,8 +3,18 @@ body {
     min-width: 100%;
     margin: 0 auto;
     background-image: linear-gradient(to left, #f6ffc2 0%, #b0c3ff 100%);
+    transition: background-image 0.3s ease;
 }
 
+.dark-mode {
+    background-image: linear-gradient(to top, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: white;
+}
+
+.light-mode {
+    background-image: linear-gradient(to left, #f6ffc2 0%, #b0c3ff 100%);
+    color: black;
+}
 
 
 .contacts-item-container {
