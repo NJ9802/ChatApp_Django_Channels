@@ -8,14 +8,15 @@
 
 {% block content %}
 
-<div class="container text-center">
+<div class="container d-flex">
     <a href="{{ request.user.avatar.url }}">
         <img class="profile-picture" src="{{ request.user.avatar.url }}" alt="photo">
     </a>
-    <h1>Hello <a class="text-black" href="{% url 'profile' %}" id="usernameLink">@{{request.user}}</a></h1>
-    <hr>
+    <div class="container my-auto">
+        <h1>Hello <a class="text-black" href="{% url 'profile' %}" id="usernameLink">@{{request.user}}</a></h1>
+    </div>    
 </div>
-
+<hr>
 <br>
 <div class="">
     <div class="index">
@@ -86,7 +87,7 @@
                                 </a>
                             </div>   
                             
-                            <a class="container-fluid" href="chatroom/{{group.id}}">
+                            <a class="container-fluid text-black" href="chatroom/{{group.id}}">
                                 <div class="">
                                     <div class="d-flex justify-content-between">
                                         <div>

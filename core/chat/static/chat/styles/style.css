@@ -22,7 +22,7 @@ body {
 }
 
 .chat_area {
-    height: 400px;
+    height: 71vh;
     overflow-y: auto;
 
 }
