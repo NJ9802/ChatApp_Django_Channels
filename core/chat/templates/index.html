@@ -12,12 +12,12 @@
     <a href="{{ request.user.avatar.url }}">
         <img class="profile-picture" src="{{ request.user.avatar.url }}" alt="photo">
     </a>
-    <h1>Hello <a href="{% url 'profile' %}">@{{request.user}}</a></h1>
+    <h1>Hello <a class="text-black" href="{% url 'profile' %}" id="usernameLink">@{{request.user}}</a></h1>
     <hr>
 </div>
 
 <br>
-<div class="container">
+<div class="">
     <div class="index">
         <div class="container">
             
@@ -36,8 +36,8 @@
                                 </a>
                             </div>   
                             
-                            <a class="container-fluid" href="{% url 'chat' chat.name %}">
-                                <div class="container">
+                            <a class="container-fluid text-black" href="{% url 'chat' chat.name %}">
+                                <div class="">
                                     <div class="d-flex justify-content-between">
                                         <div>
                                             <p class="m-0 fw-bold">@{{chat.user_2}}</p>
@@ -87,7 +87,7 @@
                             </div>   
                             
                             <a class="container-fluid" href="chatroom/{{group.id}}">
-                                <div class="container">
+                                <div class="">
                                     <div class="d-flex justify-content-between">
                                         <div>
                                             <p class="m-0 fw-bold">{{ group }}</p>
