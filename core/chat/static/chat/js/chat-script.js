@@ -158,11 +158,11 @@ roomsocket.onmessage = function (e) {
         else {
 
             if (user_username===data.username) {
-                mainDiv = '<div class="container m-1 d-flex justify-content-end">';
+                mainDiv = '<div class="container my-1 d-flex justify-content-end">';
                 headerDiv = '<div class="messages-items bg-primary">';
             }
             else {
-                mainDiv = '<div class="container m-1 d-flex justify-content-start">';
+                mainDiv = '<div class="container my-1 d-flex justify-content-start">';
                 headerDiv = '<div class="messages-items bg-secondary">';
             }
             let html = mainDiv;

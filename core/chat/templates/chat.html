@@ -6,8 +6,9 @@
 {% endblock head %}
 
 {% block content %}
-<div class="container">
-    <div class="container chat-head d-flex">
+<hr class="m-0">
+<div class="">
+    <div class="container bg-dark sticky-top chat-head d-flex">
         <a href="{{chat.user_2.avatar.url}}">
             <img src="{{chat.user_2.avatar.url}}" alt="Profile Picture">
         </a>
@@ -21,7 +22,7 @@
     
 
     <div class="chat-body">
-        <div class="container chat_area" id="chat_area">
+        <div class="chat_area" id="chat_area">
             {% include 'messages_area.html' %}
             <!-- <textarea class="form-control"
             name="" id="chat_area" cols="50" rows="10" readonly></textarea> -->
