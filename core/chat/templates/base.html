@@ -1,43 +1,63 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatApp</title>
-    <link rel="icon" type="image/svg+xml" href="{% get_media_prefix %}chat-dots.svg">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'chat/styles/style.css' %}">
-    {% block head %}
-    {% endblock %}
-</head>
-<body>
-    {% include 'navbar.html' %}
 
-    {% if messages %}
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatApp</title>
+  <link rel="icon" type="image/svg+xml" href="{% get_media_prefix %}chat-dots.svg">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'chat/styles/style.css' %}">
+  {% block head %}
+  {% endblock %}
+</head>
+
+<body>
+  {% include 'navbar.html' %}
+
+  {% if messages %}
   <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
+    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+      {% endfor %}
   </ul>
   {% endif %}
 
-  
-    {% block content %}
-    
-    
-    {% endblock content %}
-    
-    {% block script %}
-    {% endblock script %}
-    {{ request.user.id|json_script:'userId'}}
-    {{request.user.unread_notifications|json_script:'userUnreadNotifications'}}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
-    <script src="{% static 'chat/js/notifications.js' %}"></script>
-    <script src="{% static 'chat/js/base.js' %}"></script>
+  {% block content %}
+
+
+  {% endblock content %}
+
+  <span style="display: none;" id="dropdown-options"></span>
+  <span style="display: none;" id="profile-info-modal"></span>
+  <span style="display: none;" id="search-modal"></span>
+  <span style="display: none;" id="fixed-div"></span>
+  <span style="display: none;" id="back-link"></span>
+  <span style="display: none;" id="profile-info-button"></span>
+  <span style="display: none;" id="new-group-link"></span>
+  <span style="display: none;" id="id_name"></span>
+  <span style="display: none;" id="contacts-list"></span>
+  <span style="display: none;" id="contacts-ul"></span>
+  <span style="display: none;" id="nav-tabs"></span>
+  <span style="display: none;" id="chat-link"></span>
+  <span style="display: none;" id="group-link"></span>
+
+  {% block script %}
+  {% endblock script %}
+  {{ request.user.id|json_script:'userId'}}
+  {{request.user.unread_notifications|json_script:'userUnreadNotifications'}}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+    crossorigin="anonymous"></script>
+  <script src="{% static 'chat/js/notifications.js' %}"></script>
+  <script src="{% static 'chat/js/base.js' %}"></script>
 
 </body>
+
 </html>

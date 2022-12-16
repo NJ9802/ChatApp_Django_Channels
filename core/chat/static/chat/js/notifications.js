@@ -3,10 +3,11 @@ let userUnreadNotifications = JSON.parse(document.getElementById('userUnreadNoti
 
 const url1 = `ws://${window.location.host}/ws/chatapp/notifications/${userId}`;
 
-document.getElementById('notifications').innerHTML = userUnreadNotifications;
+let noti = document.getElementById('notifications');
+noti.innerHTML = userUnreadNotifications;
 
 if (userUnreadNotifications === 0) {
-    document.getElementById('notifications').innerHTML = '';
+    noti.innerHTML = '';
 
 }
 
@@ -16,7 +17,7 @@ notificationsSocket1.onmessage = function (e) {
     const data = JSON.parse(e.data);
         
     userUnreadNotifications = userUnreadNotifications + 1;
-    document.getElementById('notifications').innerHTML = userUnreadNotifications;
+    noti.innerHTML = userUnreadNotifications;
 
 };
 

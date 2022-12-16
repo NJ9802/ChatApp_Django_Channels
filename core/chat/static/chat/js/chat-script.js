@@ -185,8 +185,8 @@ roomsocket.onmessage = function (e) {
     
         objDiv.scrollTop = objDiv.scrollHeight;
     
-    }
+    };
         
     
-    scrollToBottom()
-        
+    scrollToBottom();
+    

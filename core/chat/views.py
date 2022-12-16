@@ -85,7 +85,22 @@ def index(request):
         Q(user_1 = request.user) &
         Q(user_2__username__icontains=q)
         )
+    
+    context =  {
+        'chats':chats,
+        'page': 'index'
+        }
 
+    return render(request, 'index.html', context)
+
+#---------------------------------------------------------
+
+@login_required(login_url='login')
+def group_index(request):
+    
+    
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    
     groups = Group.objects.filter(
         Q(users = request.user) &
         Q(name__icontains=q)
@@ -93,10 +108,10 @@ def index(request):
     
     context =  {
         'groups':groups,
-        'chats':chats,
+        'page': 'index'
         }
 
-    return render(request, 'index.html', context)
+    return render(request, 'group_index.html', context)
 
 #---------------------------------------------------------
 
@@ -164,8 +179,11 @@ def contacts(request):
         Q(username__icontains=q)
         )
     
+    contacts_len = len(contacts) - 1
+
     context = {
         'contacts':contacts,
+        'number_of_contacts': contacts_len,
     }
 
     return render(request, 'contacts.html', context)
@@ -204,6 +222,8 @@ def chat(request, chat_name):
 
 @login_required(login_url='login')
 def create_group(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+
     form = GroupForm()
     if request.method == 'POST':
         form = GroupForm(request.POST)
@@ -219,10 +239,14 @@ def create_group(request):
             return redirect(f'chatroom/{form_instance.id}')
 
         
-    users = User.objects.all()
+    users = User.objects.filter(
+        Q(username__icontains=q),
+    )
     context = {
         'users': users,
-        'form' : form
+        'form' : form,
+        'total_users': len(users) - 1,
+        'page':'new_group'
     }
     return render(request, 'group.html', context)
 
@@ -316,6 +340,7 @@ def notifications(request):
     
     context = {
         'notifications':users_notifications,
+        'total_chats_notifications':len(users_notifications),
     }
     return render(request, 'notifications.html', context)
 

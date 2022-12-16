@@ -20,12 +20,13 @@
 <div class="sticky-top">
     <ul id="nav-tabs" class="nav nav-tabs nav-fill bg-light border-0 justify-content-center">
         <li class="nav-item">
+            <a id="group-link" class="nav-link text-black py-1" href="{% url 'index' %}">Chats</a>
+        </li>
+
+        <li class="nav-item">
             <a id="chat-link"
                 class="nav-link text-black bg-transparent border-0 border-bottom border-success border-5 py-1"
-                aria-current="page" href="#">Chats</a>
-        </li>
-        <li class="nav-item">
-            <a id="group-link" class="nav-link text-black py-1" href="{% url 'group-index' %}">Groups</a>
+                aria-current="page" href="#">Groups</a>
         </li>
 </div>
 
@@ -76,15 +77,67 @@
                 {% endfor %}
             </div>
         </div>
+
+
+
+        <div class="container">
+
+
+            <div class="container d-flex items-containers flex-column">
+                {% for group in groups %}
+
+                {% if group.host == request.user %}
+                <a href="{% url 'deleteGroup' group.id %}">Delete</a>
+                {% endif %}
+
+
+
+                <div class="chat-item container shadow-sm m-1">
+                    <div class="d-flex align-items-center">
+                        <div class="m-1">
+                            <a href="{{ group.picture.url }}">
+                                <img src="{{ group.picture.url }}" alt="photo">
+                            </a>
+                        </div>
+
+                        <a class="container-fluid text-black" href="chatroom/{{group.id}}">
+                            <div class="">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <p class="m-0 fw-bold">{{ group }}</p>
+                                    </div>
+                                    <div>
+                                        <small>{{ group.last_message_time|date:'g:i a' }}</small>
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    <p>{{ group.last_message }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+
+                </div>
+
+
+
+                {% endfor %}
+            </div>
+        </div>
+
+
     </div>
 </div>
 
 <a class="btn start-chat m-4 fixed-bottom rounded-circle btn-success" href="{% url 'contacts' %}">
-    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-chat-right-dots"
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-plus-fill"
         viewBox="0 0 16 16">
-        <path
-            d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z" />
-        <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+        <path fill-rule="evenodd"
+            d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
     </svg>
 </a>
 
