@@ -21,8 +21,14 @@ body {
     max-width: fit-content;
 }
 
+.fixed-div {
+    height: 7.5%;
+}
+.send-input {
+    height: 7.5%;
+}
 .chat_area {
-    height: 85vh;
+    height: 83vh;
     overflow-y: auto;
 
 }

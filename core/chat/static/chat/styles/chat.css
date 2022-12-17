@@ -11,6 +11,7 @@
 .chat_area {
     margin: auto;
     max-width: 500px;
+    background-image: url('/media/fondo.jpg');
 }
 
 .send-input {
