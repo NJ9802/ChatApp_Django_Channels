@@ -210,6 +210,16 @@ def chat(request, chat_name):
     if not request.user == chat.user_1:    
         messages.error(request,'No seas cotilla...')
         return redirect('index')
+
+    if request.method == 'POST':
+        wallpaper = request.FILES.get('wallpaper')
+        if not wallpaper:
+            pass
+        else:
+            chat.wallpaper = wallpaper
+            chat.save()
+        
+        return redirect('chat', chat_name) 
     
     context = {
         'chat' : chat

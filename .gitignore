@@ -3,3 +3,4 @@ __pycache__
 .env*
 core/mediafiles/*
 !core/mediafiles/chat-dots.svg
+!core/mediafiles/default-wallpaper.jpg

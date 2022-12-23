@@ -20,6 +20,8 @@ class Chat(models.Model):
     user_1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats', null=True)
     user_2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     
+    wallpaper = models.ImageField(default='default-wallpaper.jpg')
+
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     last_message = models.CharField(max_length = 100, null=True)

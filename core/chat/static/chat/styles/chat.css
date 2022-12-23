@@ -8,11 +8,12 @@
     min-width: 60px;
 }
 
-.chat_area {
+.chat-body {
     margin: auto;
     max-width: 500px;
-    background-image: url('/media/fondo.jpg');
+
 }
+
 
 .send-input {
     max-width: 500px;
