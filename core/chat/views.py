@@ -229,6 +229,8 @@ def chat(request, chat_name):
     user = request.user
     if user.unread_notifications > 0:
         user.unread_notifications -= chat.unread_messages
+        if user.unread_notifications < 0:
+            user.unread_notifications = 0
         user.save()
     chat.unread_messages = 0
     chat.save()
