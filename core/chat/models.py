@@ -17,6 +17,8 @@ class User(AbstractUser):
 class Chat(models.Model):
     name = models.CharField(max_length=50)
     
+    unread_messages = models.IntegerField(default=0)
+
     user_1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats', null=True)
     user_2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     

@@ -83,7 +83,7 @@ const roomsocket = new WebSocket(
     // Send typing data to consumer
 
     input.addEventListener("input", function(e){
-            console.log(e.data);
+            // console.log(e.data);
             if (e.data !== null) {
                 roomsocket.send(JSON.stringify({
                     'writing':'True',
@@ -108,7 +108,7 @@ const roomsocket = new WebSocket(
 
 roomsocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
-        console.log(data);
+        // console.log(data);
         if (data.online === 'True') {
             if (data.chatname === roomName) {
                 if (data.userId === user2Id) {

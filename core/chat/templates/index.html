@@ -8,15 +8,6 @@
 
 {% block content %}
 
-<!-- <div class="container my-1 d-flex">
-    <a href="{{ request.user.avatar.url }}">
-        <img class="profile-picture" src="{{ request.user.avatar.url }}" alt="photo">
-    </a>
-    <div class="container my-auto">
-        <h3>Hello <a class="text-black" href="{% url 'profile' %}" id="usernameLink">@{{request.user}}</a></h3>
-    </div>    
-</div>
-<hr class="m-0"> -->
 <div class="sticky-top">
     <ul id="nav-tabs" class="nav nav-tabs nav-fill bg-light border-0 justify-content-center">
         <li class="nav-item">
@@ -32,16 +23,15 @@
 <br>
 <div class="">
     <div class="index">
-        <div class="container">
 
 
             <div class="container d-flex items-containers flex-column">
                 {% for chat in chats %}
-                <a href="{% url 'deleteChat' chat.id %}">Delete</a>
+                <!-- <a href="{% url 'deleteChat' chat.id %}">Delete</a> -->
 
 
 
-                <div class="chat-item container shadow-sm m-1">
+                <div class="chat-item container chat-div shadow-sm m-1" id="{{chat.id}}" name = {{forloop.counter}}>
                     <div class="d-flex align-items-center">
                         <div class="m-1">
                             <a href="{{ chat.user_2.avatar.url }}">
@@ -56,15 +46,44 @@
                                         <p class="m-0 fw-bold">@{{chat.user_2}}</p>
                                     </div>
                                     <div>
-                                        <small>{{ chat.last_message_time|date:'g:i a' }}</small>
+                                        <small id="last-message-time-{{chat.id}}">{{ chat.last_message_time|date:'g:i a' }}</small>
                                     </div>
                                 </div>
 
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        {% if chat.last_message == None %}
 
-                                <div>
-                                    <p>{{ chat.last_message }}</p>
+                                        <div>
+                                            <p id="last-message-{{chat.id}}">Chat initialized</p>
+                                        </div>
+
+                                        {% else %}
+
+                                        <div>
+                                            <p id="last-message-{{chat.id}}">{{ chat.last_message }}</p>
+                                        </div>
+
+                                        {% endif %}
+                                    </div>
+                                    {% if chat.unread_messages == 0 %}
+                                    <div id="div-0-{{chat.id}}">
+
+                                        <span class="" id="unread_messages-{{chat.id}}"></span>
+
+                                        {% else %}
+
+                                        <div class="bg-success text-center  rounded-circle"
+                                            style="width: 19px; height: 19px;">
+
+                                            <span class=""
+                                                id="unread_messages-{{chat.id}}">{{chat.unread_messages}}</span>
+                                            {% endif %}
+
+                                        </div>
+
+                                    </div>
                                 </div>
-                            </div>
                         </a>
                     </div>
 
@@ -75,7 +94,6 @@
 
                 {% endfor %}
             </div>
-        </div>
     </div>
 </div>
 

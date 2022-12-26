@@ -14,6 +14,9 @@ let groupLink = document.getElementById('group-link');
 // Chat
 let dropdownOptions = document.getElementById('dropdown-options');
 let profileInfoModal = document.getElementById('profile-info-modal');
+let backgroundModal = document.getElementById('background-modal');
+let wallpaperInput = document.getElementById('wallpaper');
+
 let fixedChatDiv = document.getElementById('fixed-div');
 let backLink = document.getElementById('back-link');
 let profileInfoButton = document.getElementById('profile-info-button');
@@ -44,8 +47,7 @@ function darkMode() {
   var element = document.body;
   element.className = "dark-mode";
   navbar.classList.remove('bg-light');
-  navbar.classList.add('bg-dark');
-  navbar.classList.add('navbar-dark');
+  navbar.classList.add('bg-dark', 'navbar-dark');
   moon.style.color = 'white';
   offcanvas.classList.add('text-bg-dark');
   searchModal.classList.add('bg-dark');
@@ -59,18 +61,17 @@ function darkMode() {
 
   dropdownOptions.classList.add('dropdown-menu-dark');
   profileInfoModal.classList.add('bg-dark');
+  backgroundModal.classList.add('bg-dark');
+  wallpaperInput.classList.add('bg-dark', 'text-white');
   fixedChatDiv.classList.remove('bg-light');
   fixedChatDiv.classList.add('bg-dark');
   backLink.classList.remove('text-black');
   backLink.classList.add('text-white');
   profileInfoButton.style.color = 'white';
   newGroupLink.style.color = 'white';
-  groupNameInput.classList.add('bg-dark');
-  groupNameInput.classList.add('text-white');
-  groupNameInput.classList.add('border-0');
+  groupNameInput.classList.add('bg-dark', 'text-white', 'border-0');
   for (let i = 0; i < contactsList.length; i++) {
-    contactsList[i].classList.add('bg-dark');
-    contactsList[i].classList.add('text-white');
+    contactsList[i].classList.add('bg-dark', 'text-white');
   };
 
 
@@ -82,9 +83,8 @@ function darkMode() {
 function lightMode() {
   var element = document.body;
   element.className = "light-mode";
-  navbar.classList.remove('bg-dark');
+  navbar.classList.remove('bg-dark', 'navbar-dark');
   navbar.classList.add('bg-light');
-  navbar.classList.remove('navbar-dark');
   moon.style.color = 'black';
   offcanvas.classList.remove('text-bg-dark');
   searchModal.classList.remove('bg-dark');

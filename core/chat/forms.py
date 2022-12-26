@@ -2,6 +2,7 @@ from django import forms
 from .models import Group, User
 from django.contrib.auth.forms import UserCreationForm
 
+
 class SignupForm(UserCreationForm):
     class Meta:
         model = User
@@ -15,8 +16,8 @@ class GroupForm(forms.ModelForm):
 
         widgets = {
             'name': forms.TextInput(attrs={
-            'placeholder': 'Write here the name of the group!',
-            'class' : 'form-control',
+                'placeholder': 'Write here the name of the group!',
+                'class': 'form-control',
             }),
         }
 
